@@ -3,123 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Tabel PANJIMAS 2026</title>
+    <title>Generator Tabel PANJIMAS 1446 H</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #525659; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        /* Menu Navigasi */
         .toolbar { position: fixed; top: 0; width: 100%; background: #323639; padding: 10px; display: flex; justify-content: center; gap: 8px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); flex-wrap: wrap; }
         .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.2s; }
         .btn-nav { background: #4a4e51; color: #fff; }
         .btn-nav.active { background: #0078d4; }
         .btn-download { background: #27ae60; color: white; margin-left: 20px; }
         .btn-download:hover { background: #219150; }
-
-        /* Kertas Dokumen */
-        .paper { 
-            background: white; 
-            width: 210mm; /* Standar A4 */
-            min-height: 297mm;
-            padding: 20mm;
-            margin-top: 80px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            box-sizing: border-box;
-            font-family: "Times New Roman", Times, serif;
-            color: black;
-        }
-
-        /* Styling Tabel ala Excel Gontor */
-        .header-area { text-align: center; margin-bottom: 20px; }
-        .header-area h2 { margin: 0; font-size: 18px; text-decoration: underline; }
-        .header-area p { margin: 2px 0; font-size: 14px; }
-
-        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-        th, td { border: 1px solid black; padding: 4px 8px; font-size: 13px; vertical-align: middle; }
-        th { background-color: #ffffff; text-transform: uppercase; font-weight: bold; text-align: center; }
+        .paper { background: white; width: 210mm; min-height: 297mm; padding: 15mm 15mm; margin-top: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; font-family: "Times New Roman", Times, serif; color: black; display: flex; flex-direction: column; }
+        .header-area { text-align: center; margin-bottom: 15px; }
+        .header-area h2 { margin: 0; font-size: 16px; text-decoration: underline; text-transform: uppercase; line-height: 1.4; }
+        .header-area p { margin: 2px 0; font-size: 13px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
+        th, td { border: 1px solid black; padding: 4px 6px; font-size: 11px; vertical-align: middle; word-wrap: break-word; }
+        th { background-color: #f2f2f2; font-weight: bold; text-align: center; text-transform: uppercase; }
+        .section-title { font-weight: bold; margin-top: 10px; margin-bottom: 4px; display: block; font-size: 13px; text-decoration: underline; }
+        .nb-area { margin-top: 15px; font-size: 12px; font-weight: bold; line-height: 1.5; white-space: pre-line; border: 1px dashed #000; padding: 10px; }
+        [contenteditable="true"]:hover { background: #f9f9f9; outline: 1px dashed #ccc; }
         
-        .section-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; display: block; font-size: 14px; }
-        .nb-area { margin-top: 20px; font-size: 13px; font-style: italic; }
-        
-        /* Edit Mode */
-        [contenteditable="true"] { outline: none; transition: 0.3s; }
-        [contenteditable="true"]:hover { background: #f0f7ff; }
-        [contenteditable="true"]:focus { background: #e8f0fe; border-bottom: 1px dashed #0078d4; }
-
-        @media print { .toolbar { display: none; } .paper { margin-top: 0; box-shadow: none; } }
+        /* Spesifik Lebar Kolom F7 */
+        .col-no { width: 30px; }
+        .col-menu { width: 180px; }
+        .col-qty { width: 50px; }
+        .col-place { width: 160px; }
     </style>
 </head>
 <body>
 
 <div class="toolbar" id="nav">
-    <!-- Tombol navigasi akan diisi oleh JS -->
     <button class="btn btn-download" onclick="exportJPG()">💾 DOWNLOAD JPG</button>
 </div>
 
 <div class="paper" id="exportArea">
-    <div id="content">
-        <!-- Tabel akan dimuat di sini -->
-    </div>
+    <div id="content"></div>
 </div>
 
 <script>
     const dataFormat = {
-        1: {
-            title: "MENU SNACK HALAL BIHALAL",
-            info: "Panitia Ujian Masuk (PANJIMAS) 1447 H / 2026 M<br>Senin, 23 Maret 2026 M / 04 Syawwal 1447 H",
+        1: { title: "MENU SNACK HALAL BIHALAL", info: "PANJIMAS 1446 H / 2025 M", sections: [{ label: "A. JUMLAH UNDANGAN", headers: ["NO.", "MENU", "JUMLAH"], rows: [["1", "Pimpinan Pondok", "3"], ["2", "Direktur KMI", "3"], ["", "TOTAL", "136"]] }], nb: "NB: Konsumsi disiapkan di meja masing-masing." },
+        2: { title: "MENU MAKANAN BERAT PENGUJI", info: "DAFTAR MENU HARIAN PANJIMAS 1446 H", sections: [{ headers: ["No", "Tanggal", "Pagi", "Malam", "Minuman"], rows: [["1", "05 April", "Ayam Kremes", "Sate Ayam", "Cemoe"], ["", "Jumlah", "30", "30", "30"]] }], nb: "NB: Sediakan kresek hitam di ruang transit." },
+        3: { title: "KONSUMSI TRANSIT WISMA GONTOR 2", info: "PANJIMAS 1446 H | 13 April 2025 M", sections: [{ label: "A. JUMLAH UNDANGAN", headers: ["NO.", "MENU", "JUMLAH"], rows: [["1", "Direktur KMI", "2"], ["", "TOTAL", "10"]] }], nb: "NB: Pengambilan Pukul 17.00." },
+        4: { title: "KONSUMSI PENGARAHAN PENGAWAS & PENGOREKSI", info: "PANJIMAS 1446 H | 13 April 2025 M", sections: [{ label: "A. JUMLAH UNDANGAN", headers: ["NO.", "MENU", "JUMLAH"], rows: [["1", "Wadir KMI", "1"], ["", "TOTAL", "49"]] }], nb: "NB: Pengambilan Pukul 17.00." },
+        5: { title: "KONSUMSI PENGARAHAN PEMBACA IMLA'", info: "PANJIMAS 1446 H | 13 April 2025 M", sections: [{ label: "A. JUMLAH UNDANGAN", headers: ["NO.", "MENU", "JUMLAH"], rows: [["1", "Wadir KMI G2", "1"], ["", "TOTAL", "13"]] }], nb: "NB: Pengambilan Pukul 17.00." },
+        6: { title: "KONSUMSI PENGARAHAN DI MASJID", info: "PANJIMAS 1446 H | 13 April 2025 M", sections: [{ label: "A. JUMLAH UNDANGAN", headers: ["NO.", "MENU", "JUMLAH"], rows: [["1", "Direktur KMI", "1"]] }], nb: "NB: Petugas membawa adawat setelah Isya'." },
+        7: {
+            title: "MAKAN SIANG UJIAN TULIS CALON PELAJAR",
+            info: "Panitia Ujian Masuk (PANJIMAS) 1446 H / 2025 M",
             sections: [
-                { label: "A. JUMLAH UNDANGAN", headers: ["NO", "MENU", "JUMLAH"], rows: [["1", "Pimpinan Pondok", "2"], ["2", "Direktur KMI", "2"], ["3", "Muwajjih", "7"], ["TOTAL", "", "135"]] },
-                { label: "B. MENU SNACK KOTAKAN", headers: ["NO", "MENU", "JUMLAH"], rows: [["1", "Arem-arem", "44"], ["2", "Sosis isi Ayam", "44"], ["3", "Pisang Moka", "44"]] }
+                { 
+                    label: "A. RINCIAN DATA MAKAN SIANG", 
+                    headers: ["NO.", "GOLONGAN / UNIT", "JUMLAH", "TEMPAT MAKAN SIANG", "JENIS", "TOTAL"], 
+                    rows: [
+                        ["1", "Direktur KMI", "2", "Wisma Gontor 2", "VVIP", "14"],
+                        ["2", "Guru Senior Gontor 2", "6", "Wisma Gontor 2", "VVIP", ""],
+                        ["3", "Ketua Panjimas", "2", "Wisma Gontor 2", "VVIP", ""],
+                        ["4", "Staf Wisma Gontor 2", "4", "Wisma Gontor 2", "VVIP", ""],
+                        ["5", "Muroqib Zone (Guru Junior)", "2", "Kantor Panjimas", "VIP", "120"],
+                        ["6", "Muroqib Guru Junior (Petugas)", "24", "Transit Gedung Thoif 103", "VIP", ""],
+                        ["7", "Pengoreksi Lembar Jawaban", "24", "Transit Gedung Thoif 103", "VIP", ""],
+                        ["8", "Qori' Imla'", "12", "Transit Gedung Thoif 103", "VIP", ""],
+                        ["9", "Panitia Ujian Masuk", "52", "Kantor Panjimas", "VIP", ""],
+                        ["10", "Kelas 6 Bagian Konsumsi", "6", "Gedung Thoif 104", "VIP", ""],
+                        ["11", "Calon Pelajar", "?", "Koperasi Dapur", "Biasa", "Unknown"],
+                        ["", "TOTAL KESELURUHAN", "134 + ?", "", "", ""]
+                    ] 
+                }
             ],
-            nb: "- Konsumsi Pimpinan disiapkan di meja masing-masing<br>- Tidak ada konsumsi berat untuk acara ini"
-        },
-        2: {
-            title: "MENU MAKANAN BERAT PENGUJI",
-            info: "Panitia Ujian Masuk 1447 H / 2026 M",
-            sections: [
-                { label: "", headers: ["No", "Tanggal", "Pagi (06.30) - Makanan", "Malam (19.30) - Makanan", "Minuman"], rows: [
-                    ["1", "26 Maret 2026", "Nasi Ayam Kampung Goreng", "Sate Ayam Lontong", "Cemoe"],
-                    ["2", "27 Maret 2026", "Nasi Krawu Gresik", "Ayam Goreng (Pemuda)", "Bubur Kacang Ijo"]
-                ]}
-            ],
-            nb: "NB: Ketika pagi hari tidak ada minuman dingin, cukup Amidas gelas 2 di meja."
+            nb: "RINGKASAN:\n- Kategori VVIP (14 Orang): Bertempat di Wisma Gontor 2.\n- Kategori VIP (120 Orang): Tersebar di Kantor Panjimas, Ruang Transit Thoif 103, dan Gedung Thoif 104.\n- Calon Pelajar: Lokasi di Koperasi Dapur (Jumlah menyesuaikan)."
         }
-        // Format 3-9 bisa ditambahkan dengan struktur yang sama
     };
 
     function loadFormat(id) {
-        const data = dataFormat[id] || dataFormat[1];
-        let html = `
-            <div class="header-area">
-                <h2 contenteditable="true">${data.title}</h2>
-                <p contenteditable="true">${data.info}</p>
-            </div>
-        `;
-
+        const data = dataFormat[id] || { title: "FORMAT " + id, info: "Data Belum Diinput", sections: [], nb: "" };
+        let html = `<div class="header-area"><h2 contenteditable="true">${data.title}</h2><p contenteditable="true">${data.info}</p></div>`;
+        
         data.sections.forEach(sec => {
             if(sec.label) html += `<span class="section-title" contenteditable="true">${sec.label}</span>`;
             html += `<table><thead><tr>`;
-            sec.headers.forEach(h => html += `<th contenteditable="true">${h}</th>`);
+            sec.headers.forEach((h, i) => {
+                let cls = (id==7 && i==0) ? 'class="col-no"' : (id==7 && i==1) ? 'class="col-menu"' : (id==7 && i==2) ? 'class="col-qty"' : (id==7 && i==3) ? 'class="col-place"' : '';
+                html += `<th contenteditable="true" ${cls}>${h}</th>`;
+            });
             html += `</tr></thead><tbody>`;
             sec.rows.forEach(row => {
                 html += `<tr>`;
-                row.forEach(cell => html += `<td contenteditable="true">${cell}</td>`);
+                row.forEach(cell => {
+                    let style = (cell.includes("TOTAL") || cell.includes("Jumlah")) ? "font-weight:bold;text-align:center;background:#f2f2f2;" : "";
+                    html += `<td contenteditable="true" style="${style}">${cell}</td>`;
+                });
                 html += `</tr>`;
             });
             html += `</tbody></table>`;
         });
-
+        
         html += `<div class="nb-area" contenteditable="true">${data.nb}</div>`;
-        
         document.getElementById('content').innerHTML = html;
-        
-        // Update button state
-        document.querySelectorAll('.btn-nav').forEach((btn, idx) => {
-            btn.classList.toggle('active', (idx + 1) == id);
-        });
+        document.querySelectorAll('.btn-nav').forEach((btn, idx) => btn.classList.toggle('active', (idx + 1) == id));
     }
 
-    // Buat Navigasi
     const nav = document.getElementById('nav');
     for (let i = 1; i <= 9; i++) {
         const b = document.createElement('button');
@@ -129,25 +113,17 @@
         nav.insertBefore(b, nav.lastElementChild);
     }
 
-    // Fungsi Export ke JPG
     function exportJPG() {
         const area = document.getElementById('exportArea');
-        // Gunakan scale 3 untuk hasil sangat tajam
-        html2canvas(area, { 
-            scale: 3,
-            useCORS: true,
-            backgroundColor: "#ffffff"
-        }).then(canvas => {
+        html2canvas(area, { scale: 3, backgroundColor: "#ffffff" }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `PANJIMAS_2026_Format.jpg`;
-            link.href = canvas.toDataURL("image/jpeg", 1.0);
+            link.download = `PANJIMAS_FORMAT_${new Date().getTime()}.jpg`;
+            link.href = canvas.toDataURL("image/jpeg", 0.95);
             link.click();
         });
     }
 
-    // Jalankan format 1 pertama kali
     loadFormat(1);
 </script>
-
 </body>
 </html>
