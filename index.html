@@ -3,190 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring Konsumsi PANJIMAS 2026</title>
-    <!-- CSS Internal -->
+    <title>Generator Format PANJIMAS 2026</title>
+    <!-- Script untuk konversi HTML ke Gambar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #27ae60;
-            --bg: #f0f2f5;
-            --white: #ffffff;
-        }
+        :root { --primary: #2c3e50; --secondary: #27ae60; --gray: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background: var(--gray); margin: 0; padding: 20px; }
+        
+        /* Navigasi */
+        .nav-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
+        .nav-btn { padding: 10px 15px; border: none; background: white; cursor: pointer; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
+        .nav-btn.active { background: var(--primary); color: white; }
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        /* Area Kerja */
+        .workspace { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .canvas-wrapper { background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.1); border: 1px solid #ddd; width: 800px; min-height: 1000px; }
+        
+        /* Style Tabel Persis Seperti Excel */
+        .format-header { text-align: center; margin-bottom: 20px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; font-size: 14px; }
+        th { background-color: #f2f2f2; text-align: center; }
+        .editable { outline: none; background: #fffdf0; }
+        .editable:focus { background: #fff; border: 1px solid blue; }
 
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .controls {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        select:focus {
-            border-color: var(--secondary);
-            outline: none;
-        }
-
-        .viewer-container {
-            background: var(--white);
-            padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 1000px;
-            min-height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            overflow: auto;
-        }
-
-        #format-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 4px;
-            transition: opacity 0.4s ease-in-out;
-        }
-
-        .loading-spinner {
-            display: none;
-            margin-top: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--secondary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background: #e9ecef;
-            font-size: 13px;
-            color: #666;
-        }
-
-        @media (max-width: 600px) {
-            .controls, .viewer-container {
-                padding: 10px;
-            }
-            select { font-size: 14px; }
-        }
+        /* Tombol Aksi */
+        .action-bar { position: sticky; top: 0; background: var(--gray); padding: 10px; z-index: 100; display: flex; gap: 10px; }
+        .download-btn { background: var(--secondary); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<header>
-    <h2 style="margin:0;">PANJIMAS 1447 H / 2026 M</h2>
-    <small>Sistem Informasi Data Konsumsi</small>
-</header>
-
-<div class="main-content">
-    <div class="controls">
-        <label for="formatSelect">Pilih Format Dokumen:</label>
-        <!-- Sesuaikan Nama File Gambar di bagian value di bawah ini -->
-        <select id="formatSelect" onchange="updateViewer()">
-            <option value="format1.jpg">1. Snack Halal Bihalal</option>
-            <option value="format2.jpg">2. Makanan Berat Penguji Lisan</option>
-            <option value="format3.jpg">3. Konsumsi Transit Wisma Gontor 2</option>
-            <option value="format4.jpg">4. Pengawas & Pengoreksi Tulis</option>
-            <option value="format5.jpg">5. Pembaca Imla' Ujian Tulis</option>
-            <option value="format6.jpg">6. Direktur KMI (Masjid)</option>
-            <option value="format7.jpg">7. Makan Siang Calon Pelajar</option>
-            <option value="format8.jpg">8. Menu Harian Panitia (Awal)</option>
-            <option value="format9.jpg">9. Menu Harian Panitia (Lanjutan)</option>
-        </select>
+<div class="workspace">
+    <div class="action-bar">
+        <button class="download-btn" onclick="downloadImage()">⬇️ Download Sebagai JPG</button>
     </div>
 
-    <div class="viewer-container">
-        <div id="loader" class="loading-spinner"></div>
-        <img id="format-image" src="format1.jpg" alt="Pilih format untuk melihat">
+    <div class="nav-container" id="navBar">
+        <!-- Button akan dibuat otomatis oleh JS -->
+    </div>
+
+    <div id="captureArea" class="canvas-wrapper">
+        <div id="formatContent">
+            <!-- Konten tabel akan berubah di sini -->
+        </div>
     </div>
 </div>
 
-<footer>
-    &copy; 2026 Panitia Ujian Masuk - Gontor 2. All Rights Reserved.
-</footer>
-
-<!-- JS Internal -->
 <script>
-    function updateViewer() {
-        const select = document.getElementById('formatSelect');
-        const img = document.getElementById('format-image');
-        const loader = document.getElementById('loader');
+    // Data Struktur Format (Contoh untuk Format 1 & 2)
+    // Kamu bisa menambahakan template format lainnya di sini
+    const formats = {
+        1: {
+            title: "MENU SNACK HALAL BIHALAL",
+            subtitle: "Panitia Ujian Masuk (PANJIMAS) 1447 H / 2026 M",
+            headers: ["NO", "MENU", "JUMLAH"],
+            rows: [
+                ["1", "Pimpinan Pondok", "2"],
+                ["2", "Direktur KMI", "2"],
+                ["3", "Muwajjih", "7"],
+                ["4", "Penguji (Guru Senior)", "35"]
+            ]
+        },
+        2: {
+            title: "MENU MAKANAN BERAT PENGUJI",
+            subtitle: "Panitia Ujian Masuk 1447 H / 2026 M",
+            headers: ["No", "Tanggal", "Pagi (06.30)", "Malam (19.30)"],
+            rows: [
+                ["1", "26 Maret 2026", "Nasi Ayam Kampung", "Sate Ayam"],
+                ["2", "27 Maret 2026", "Nasi Krawu", "Ayam Goreng"]
+            ]
+        }
+        // Tambahkan format 3-9 dengan pola yang sama
+    };
 
-        // Sembunyikan gambar lama & tampilkan loading
-        img.style.opacity = '0';
-        loader.style.display = 'block';
+    let currentFormat = 1;
 
-        // Set gambar baru
-        img.src = select.value;
-
-        // Saat gambar baru selesai dimuat
-        img.onload = function() {
-            loader.style.display = 'none';
-            img.style.opacity = '1';
-        };
-
-        // Penanganan jika file tidak ditemukan
-        img.onerror = function() {
-            loader.style.display = 'none';
-            alert('File gambar tidak ditemukan. Pastikan nama file sesuai: ' + select.value);
-        };
+    // Fungsi Render Tabel
+    function renderFormat(id) {
+        currentFormat = id;
+        const data = formats[id] || formats[1];
+        let html = `
+            <div class="format-header">
+                <h3 style="margin:0">${data.title}</h3>
+                <p style="margin:5px 0">${data.subtitle}</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>${data.headers.map(h => `<th>${h}</th>`).join('')}</tr>
+                </thead>
+                <tbody>
+                    ${data.rows.map(row => `
+                        <tr>
+                            ${row.map(cell => `<td contenteditable="true" class="editable">${cell}</td>`).join('')}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div style="margin-top:20px; font-size:12px">
+                <i>*Klik pada teks untuk mengedit isi tabel secara langsung.</i>
+            </div>
+        `;
+        document.getElementById('formatContent').innerHTML = html;
+        
+        // Update Active Button
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.innerText.includes(id));
+        });
     }
+
+    // Buat Navigasi 1-9
+    const navBar = document.getElementById('navBar');
+    for (let i = 1; i <= 9; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn';
+        btn.innerText = `Format ${i}`;
+        btn.onclick = () => renderFormat(i);
+        navBar.appendChild(btn);
+    }
+
+    // Fungsi Download JPG
+    function downloadImage() {
+        const area = document.getElementById('captureArea');
+        html2canvas(area, { scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Format_${currentFormat}_PANJIMAS.jpg`;
+            link.href = canvas.toDataURL("image/jpeg", 0.9);
+            link.click();
+        });
+    }
+
+    // Inisialisasi awal
+    renderFormat(1);
 </script>
 
 </body>
