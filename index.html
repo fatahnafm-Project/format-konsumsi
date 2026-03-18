@@ -3,140 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Format PANJIMAS 2026</title>
-    <!-- Script untuk konversi HTML ke Gambar -->
+    <title>Generator Tabel PANJIMAS 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #2c3e50; --secondary: #27ae60; --gray: #f4f4f4; }
-        body { font-family: 'Arial', sans-serif; background: var(--gray); margin: 0; padding: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #525659; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         
-        /* Navigasi */
-        .nav-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
-        .nav-btn { padding: 10px 15px; border: none; background: white; cursor: pointer; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
-        .nav-btn.active { background: var(--primary); color: white; }
+        /* Menu Navigasi */
+        .toolbar { position: fixed; top: 0; width: 100%; background: #323639; padding: 10px; display: flex; justify-content: center; gap: 8px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); flex-wrap: wrap; }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.2s; }
+        .btn-nav { background: #4a4e51; color: #fff; }
+        .btn-nav.active { background: #0078d4; }
+        .btn-download { background: #27ae60; color: white; margin-left: 20px; }
+        .btn-download:hover { background: #219150; }
 
-        /* Area Kerja */
-        .workspace { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .canvas-wrapper { background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.1); border: 1px solid #ddd; width: 800px; min-height: 1000px; }
-        
-        /* Style Tabel Persis Seperti Excel */
-        .format-header { text-align: center; margin-bottom: 20px; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; font-size: 14px; }
-        th { background-color: #f2f2f2; text-align: center; }
-        .editable { outline: none; background: #fffdf0; }
-        .editable:focus { background: #fff; border: 1px solid blue; }
+        /* Kertas Dokumen */
+        .paper { 
+            background: white; 
+            width: 210mm; /* Standar A4 */
+            min-height: 297mm;
+            padding: 20mm;
+            margin-top: 80px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            font-family: "Times New Roman", Times, serif;
+            color: black;
+        }
 
-        /* Tombol Aksi */
-        .action-bar { position: sticky; top: 0; background: var(--gray); padding: 10px; z-index: 100; display: flex; gap: 10px; }
-        .download-btn { background: var(--secondary); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        /* Styling Tabel ala Excel Gontor */
+        .header-area { text-align: center; margin-bottom: 20px; }
+        .header-area h2 { margin: 0; font-size: 18px; text-decoration: underline; }
+        .header-area p { margin: 2px 0; font-size: 14px; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        th, td { border: 1px solid black; padding: 4px 8px; font-size: 13px; vertical-align: middle; }
+        th { background-color: #ffffff; text-transform: uppercase; font-weight: bold; text-align: center; }
         
-        .hidden { display: none; }
+        .section-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; display: block; font-size: 14px; }
+        .nb-area { margin-top: 20px; font-size: 13px; font-style: italic; }
+        
+        /* Edit Mode */
+        [contenteditable="true"] { outline: none; transition: 0.3s; }
+        [contenteditable="true"]:hover { background: #f0f7ff; }
+        [contenteditable="true"]:focus { background: #e8f0fe; border-bottom: 1px dashed #0078d4; }
+
+        @media print { .toolbar { display: none; } .paper { margin-top: 0; box-shadow: none; } }
     </style>
 </head>
 <body>
 
-<div class="workspace">
-    <div class="action-bar">
-        <button class="download-btn" onclick="downloadImage()">⬇️ Download Sebagai JPG</button>
-    </div>
+<div class="toolbar" id="nav">
+    <!-- Tombol navigasi akan diisi oleh JS -->
+    <button class="btn btn-download" onclick="exportJPG()">💾 DOWNLOAD JPG</button>
+</div>
 
-    <div class="nav-container" id="navBar">
-        <!-- Button akan dibuat otomatis oleh JS -->
-    </div>
-
-    <div id="captureArea" class="canvas-wrapper">
-        <div id="formatContent">
-            <!-- Konten tabel akan berubah di sini -->
-        </div>
+<div class="paper" id="exportArea">
+    <div id="content">
+        <!-- Tabel akan dimuat di sini -->
     </div>
 </div>
 
 <script>
-    // Data Struktur Format (Contoh untuk Format 1 & 2)
-    // Kamu bisa menambahakan template format lainnya di sini
-    const formats = {
+    const dataFormat = {
         1: {
             title: "MENU SNACK HALAL BIHALAL",
-            subtitle: "Panitia Ujian Masuk (PANJIMAS) 1447 H / 2026 M",
-            headers: ["NO", "MENU", "JUMLAH"],
-            rows: [
-                ["1", "Pimpinan Pondok", "2"],
-                ["2", "Direktur KMI", "2"],
-                ["3", "Muwajjih", "7"],
-                ["4", "Penguji (Guru Senior)", "35"]
-            ]
+            info: "Panitia Ujian Masuk (PANJIMAS) 1447 H / 2026 M<br>Senin, 23 Maret 2026 M / 04 Syawwal 1447 H",
+            sections: [
+                { label: "A. JUMLAH UNDANGAN", headers: ["NO", "MENU", "JUMLAH"], rows: [["1", "Pimpinan Pondok", "2"], ["2", "Direktur KMI", "2"], ["3", "Muwajjih", "7"], ["TOTAL", "", "135"]] },
+                { label: "B. MENU SNACK KOTAKAN", headers: ["NO", "MENU", "JUMLAH"], rows: [["1", "Arem-arem", "44"], ["2", "Sosis isi Ayam", "44"], ["3", "Pisang Moka", "44"]] }
+            ],
+            nb: "- Konsumsi Pimpinan disiapkan di meja masing-masing<br>- Tidak ada konsumsi berat untuk acara ini"
         },
         2: {
             title: "MENU MAKANAN BERAT PENGUJI",
-            subtitle: "Panitia Ujian Masuk 1447 H / 2026 M",
-            headers: ["No", "Tanggal", "Pagi (06.30)", "Malam (19.30)"],
-            rows: [
-                ["1", "26 Maret 2026", "Nasi Ayam Kampung", "Sate Ayam"],
-                ["2", "27 Maret 2026", "Nasi Krawu", "Ayam Goreng"]
-            ]
+            info: "Panitia Ujian Masuk 1447 H / 2026 M",
+            sections: [
+                { label: "", headers: ["No", "Tanggal", "Pagi (06.30) - Makanan", "Malam (19.30) - Makanan", "Minuman"], rows: [
+                    ["1", "26 Maret 2026", "Nasi Ayam Kampung Goreng", "Sate Ayam Lontong", "Cemoe"],
+                    ["2", "27 Maret 2026", "Nasi Krawu Gresik", "Ayam Goreng (Pemuda)", "Bubur Kacang Ijo"]
+                ]}
+            ],
+            nb: "NB: Ketika pagi hari tidak ada minuman dingin, cukup Amidas gelas 2 di meja."
         }
-        // Tambahkan format 3-9 dengan pola yang sama
+        // Format 3-9 bisa ditambahkan dengan struktur yang sama
     };
 
-    let currentFormat = 1;
-
-    // Fungsi Render Tabel
-    function renderFormat(id) {
-        currentFormat = id;
-        const data = formats[id] || formats[1];
+    function loadFormat(id) {
+        const data = dataFormat[id] || dataFormat[1];
         let html = `
-            <div class="format-header">
-                <h3 style="margin:0">${data.title}</h3>
-                <p style="margin:5px 0">${data.subtitle}</p>
-            </div>
-            <table>
-                <thead>
-                    <tr>${data.headers.map(h => `<th>${h}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.rows.map(row => `
-                        <tr>
-                            ${row.map(cell => `<td contenteditable="true" class="editable">${cell}</td>`).join('')}
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-            <div style="margin-top:20px; font-size:12px">
-                <i>*Klik pada teks untuk mengedit isi tabel secara langsung.</i>
+            <div class="header-area">
+                <h2 contenteditable="true">${data.title}</h2>
+                <p contenteditable="true">${data.info}</p>
             </div>
         `;
-        document.getElementById('formatContent').innerHTML = html;
+
+        data.sections.forEach(sec => {
+            if(sec.label) html += `<span class="section-title" contenteditable="true">${sec.label}</span>`;
+            html += `<table><thead><tr>`;
+            sec.headers.forEach(h => html += `<th contenteditable="true">${h}</th>`);
+            html += `</tr></thead><tbody>`;
+            sec.rows.forEach(row => {
+                html += `<tr>`;
+                row.forEach(cell => html += `<td contenteditable="true">${cell}</td>`);
+                html += `</tr>`;
+            });
+            html += `</tbody></table>`;
+        });
+
+        html += `<div class="nb-area" contenteditable="true">${data.nb}</div>`;
         
-        // Update Active Button
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.innerText.includes(id));
+        document.getElementById('content').innerHTML = html;
+        
+        // Update button state
+        document.querySelectorAll('.btn-nav').forEach((btn, idx) => {
+            btn.classList.toggle('active', (idx + 1) == id);
         });
     }
 
-    // Buat Navigasi 1-9
-    const navBar = document.getElementById('navBar');
+    // Buat Navigasi
+    const nav = document.getElementById('nav');
     for (let i = 1; i <= 9; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'nav-btn';
-        btn.innerText = `Format ${i}`;
-        btn.onclick = () => renderFormat(i);
-        navBar.appendChild(btn);
+        const b = document.createElement('button');
+        b.className = 'btn btn-nav';
+        b.innerText = `F${i}`;
+        b.onclick = () => loadFormat(i);
+        nav.insertBefore(b, nav.lastElementChild);
     }
 
-    // Fungsi Download JPG
-    function downloadImage() {
-        const area = document.getElementById('captureArea');
-        html2canvas(area, { scale: 2 }).then(canvas => {
+    // Fungsi Export ke JPG
+    function exportJPG() {
+        const area = document.getElementById('exportArea');
+        // Gunakan scale 3 untuk hasil sangat tajam
+        html2canvas(area, { 
+            scale: 3,
+            useCORS: true,
+            backgroundColor: "#ffffff"
+        }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Format_${currentFormat}_PANJIMAS.jpg`;
-            link.href = canvas.toDataURL("image/jpeg", 0.9);
+            link.download = `PANJIMAS_2026_Format.jpg`;
+            link.href = canvas.toDataURL("image/jpeg", 1.0);
             link.click();
         });
     }
 
-    // Inisialisasi awal
-    renderFormat(1);
+    // Jalankan format 1 pertama kali
+    loadFormat(1);
 </script>
 
 </body>
