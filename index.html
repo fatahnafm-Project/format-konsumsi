@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Konsumsi PANJIMAS 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Data Konsumsi Panitia Ujian Masuk 1447 H</h1>
+        <p>Pilih format untuk menampilkan detail menu dan jadwal</p>
+    </header>
+
+    <div class="container">
+        <!-- Dropdown untuk memilih format -->
+        <div class="selector-wrapper">
+            <label for="format-select">Pilih Format Tabel:</label>
+            <select id="format-select" onchange="changeFormat()">
+                <option value="assets/format1.jpg">Format 1: Snack Halal Bihalal</option>
+                <option value="assets/format2.jpg">Format 2: Makanan Berat Penguji</option>
+                <option value="assets/format3.jpg">Format 3: Konsumsi Transit Wisma</option>
+                <option value="assets/format4.jpg">Format 4: Pengawas Ujian Tulis</option>
+                <option value="assets/format5.jpg">Format 5: Pembaca Imla'</option>
+                <option value="assets/format6.jpg">Format 6: Direktur KMI (Masjid)</option>
+                <option value="assets/format7.jpg">Format 7: Makan Siang Calon Pelajar</option>
+                <option value="assets/format8.jpg">Format 8: Menu Harian Panitia</option>
+                <option value="assets/format9.jpg">Format 9: Jadwal Syawwal 1-18</option>
+            </select>
+        </div>
+
+        <!-- Area Tampilan Gambar -->
+        <div class="display-area">
+            <div id="loading" style="display:none;">Memuat data...</div>
+            <img id="format-display" src="assets/format1.jpg" alt="Tampilan Format">
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Panitia Ujian Masuk (PANJIMAS) - Gontor 2</p>
+    </footer>
+
+    <script>
+        function changeFormat() {
+            const select = document.getElementById('format-select');
+            const display = document.getElementById('format-display');
+            const loading = document.getElementById('loading');
+
+            // Tampilkan loading sebentar
+            display.style.opacity = "0.5";
+            loading.style.display = "block";
+
+            // Ganti source gambar
+            display.src = select.value;
+
+            display.onload = function() {
+                display.style.opacity = "1";
+                loading.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
